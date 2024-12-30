@@ -1,0 +1,103 @@
+//INPUT
+import java.util.Scanner;
+
+abstract class RevenueCalculator {
+    abstract double calculateRevenue(int participants);
+}
+
+public class EventManager {
+    
+    // Inner static class Event
+    static class Event {
+        private String name;
+        private String date;
+        private String type;
+        private int participants;
+
+        public Event(String name, String date, String type, int participants) {
+            this.name = name;
+            this.date = date;
+            this.type = type;
+            this.participants = participants;
+        }
+
+        public void addParticipants(int participants) {
+            this.participants = participants;
+        }
+
+        public double calculateEventCost() {
+            // Default revenue calculation, will be overridden in anonymous classes
+            return 0;
+        }
+
+        public String getDetails() {
+            return "Event Name: " + name + "\n" +
+                   "Event Type: " + type + "\n" +
+                   "Date: " + date + "\n";
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Get event details from the user
+        System.out.println("Enter event type (Conference/Workshop/Seminar): ");
+        String eventType = scanner.nextLine();
+        
+        System.out.println("Enter event name: ");
+        String eventName = scanner.nextLine();
+        
+        System.out.println("Enter event date: ");
+        String eventDate = scanner.nextLine();
+        
+        System.out.println("Enter number of participants: ");
+        int participants = scanner.nextInt();
+
+        // Create the event object
+        Event event = new Event(eventName, eventDate, eventType, participants);
+        
+        // Define the RevenueCalculator using an anonymous class based on event type
+        RevenueCalculator revenueCalculator = null;
+
+        switch (eventType) {
+            case "Conference":
+                revenueCalculator = new RevenueCalculator() {
+                    @Override
+                    double calculateRevenue(int participants) {
+                        return participants * 100;  // $100 per participant
+                    }
+                };
+                break;
+            case "Workshop":
+                revenueCalculator = new RevenueCalculator() {
+                    @Override
+                    double calculateRevenue(int participants) {
+                        return participants * 50;  // $50 per participant
+                    }
+                };
+                break;
+            case "Seminar":
+                revenueCalculator = new RevenueCalculator() {
+                    @Override
+                    double calculateRevenue(int participants) {
+                        return participants * 30;  // $30 per participant
+                    }
+                };
+                break;
+            default:
+                System.out.println("Invalid event type!");
+                return;
+        }
+
+        // Calculate revenue
+        double revenue = revenueCalculator.calculateRevenue(participants);
+
+        // Display event details and revenue
+        System.out.println("Event added successfully!");
+        System.out.println("\nEvent Details:");
+        System.out.println(event.getDetails());
+        System.out.println("Revenue Generated: $" + revenue);
+    }
+}
+//OUTPUT
+A revenue calculator would be created
